@@ -1,0 +1,201 @@
+
+
+  <body >
+    <header>
+      <h1 class="text-center">Status Tracker</h1>
+     
+    </header>
+ <div class= "well">
+ <div class="space-16"></div>
+                        UID: {{uid}}
+                        <br/>NAME: {{name}}
+                        <br/>E-MAIL: {{email}}
+                        
+                         <br/>Apt: {{role}}
+                        <br/>
+</br>
+                        <a ng-click="logout();">Logout</a>
+</div>
+      <section class="tab" ng-controller="TabController as tabs">
+        <ul class="nav nav-pills">
+          
+          
+          <li ng-class="{active:tabs.isSet(3)}">
+            <a href ng-click="tabs.setTab(3)">Add Task</a></li>
+            <li ng-class="{active:tabs.isSet(2)}">
+            <a href ng-click="tabs.setTab(2)">Update Status</a></li>
+            <li ng-class="{active:tabs.isSet(4)}">
+            <a href ng-click="tabs.setTab(4)">Report Card</a></li>
+        </ul>
+      
+		
+        <div ng-show="tabs.isSet(2)" ng-controller="retriveCtrl">
+          <h4>Project Report</h4>
+          
+		  <table ng-table="tableParams" class="table table-bordered" show-filter="true">
+    <tr ng-repeat="user in 	users">
+        <td title="'Assigne Name'" filter="{ name: 'text'}" sortable="'name'">
+            {{user.name}}</td>
+        <td title="'Assigner Name'" >
+            {{user.assigname}}</td>
+			 <td title="'Module'" >
+            {{user.module}}</td>
+			 <td title="'Module Description'" filter="{ age: 'text'}" sortable="'age'">
+            {{user.desc}}</td>
+			 <td title="'Start Date'">
+            {{user.sdate}}</td>
+			 <td title="'End Date'" >
+            {{user.edate}}</td>
+			 <td title="'Status'" filter="{ status: 'text'}" sortable="'status'">
+            {{user.status1}}</td>
+    </tr>
+</table>
+		  
+		  
+		  
+        </div>
+		
+		
+		
+        <div ng-show="tabs.isSet(3)" ng-controller="assign">
+          <h4>Assign</h4>
+           <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <form ng-submit="addNew(1)">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+                                        <th> Assigne Name</th>
+										
+                                        <th>Task Name</th>
+                                        <th>Start Date</th>
+										<th>End Date</th>
+										<th>Frequency</th>
+										<th> Participants</th>
+	                                   			<th> Multiple Participants</th>						
+										
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="personalDetail in personalDetails1">
+                                        <td>
+                                            <input type="checkbox" ng-model="personalDetail.selected"/></td>
+                                      
+                                        <td>
+                                            <input type="text" class="form-control"  ng-model="personalDetail.assignename" required/></td>
+
+											 <td>
+                                            <textarea rows="4" cols="50" class="form-control" ng-model="personalDetail.module" required></textarea></td>
+											
+											  <td>
+                                            <input type="text" class="form-control"  ng-model="personalDetail.startdate " jqdatepicker /></td>
+											<td> 
+                                            <input type="text" class="form-control"  ng-model="personalDetail.enddate " jqdatepicker /></td>
+											<td>
+											
+                                      <select ng-model="personalDetail.frequency" ng-options="item for item in names">
+                                                                                </select>
+
+											</td>
+											<td>
+										<md-input-container>
+                   <label>Name</label>
+                       <md-select ng-model="personalDetail.users.id" multiple="">
+                                   <md-optgroup label="Names">
+              <md-option ng-value="topping.id" ng-repeat="topping in personalDetail.users" >{{topping.name}}</md-option>
+          </md-optgroup>
+          
+        </md-select>
+      </md-input-container>
+
+											</td>
+											<br><br>
+											<td>
+											<select ng-model="personalDetail.multiple" ng-options="item for item in multiple">
+                                                                                </select>
+											</td>
+											
+											
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <input ng-hide="!personalDetails1.length" type="button" class="btn btn-danger pull-right" ng-click="remove()" value="Remove">
+                                <input type="submit" class="btn btn-primary addnew pull-right" value="Add New">
+								<input ng-hide="!personalDetails1.length"  type="button" class="btn btn-success" ng-click="addstatus(personalDetail)" value="Save">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+			  
+			  
+			  
+        </div>
+
+ <div ng-show="tabs.isSet(4)" ng-controller="showChart">
+          <h4>Biweekly Report</h4>
+          
+
+               <div  ng-cloak="" class="datepickerdemoBasicUsage" >
+  <md-content layout-padding="">
+
+    <div layout-gt-xs="row">
+      <div flex-gt-xs="">
+        <h4>Start Date</h4>
+        <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+      </div>
+    <div flex-gt-xs="">
+        <h4>End Date</h4>
+        <md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>
+      </div>
+      
+   <div flex-gt-xs="">
+       
+       <input  button class="btn btn-primary"   ng-click="retriveReport()" type="submit"></input>
+      </div>
+
+
+    </div>
+
+  
+  </md-content>
+</div>
+
+
+
+
+
+
+
+
+      <fusioncharts  ng-hide="demo" id="mychartcontainer" chartid="angularChart" width="100%"  height="500" type="column2d" dataSource="{{dataSource}}" events="events">Awesome Chart on its way!</fusioncharts>
+
+      <br>
+      <br>
+      <br>
+       <div class="statusbar" style="{{ colorValue }}">{{ selectedValue }}</div>
+      
+      <br>
+      <br>
+      <br>
+
+
+
+
+      
+        </div>
+  
+
+
+
+
+      </section>
+   
+  </body>
+
